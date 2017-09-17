@@ -1,0 +1,47 @@
+clear all
+close all
+clc;
+ 
+a = arduino();
+tmax = 60;
+figure(1),
+grid on,
+title('LDR Analog Voltage Real Time Data Graph')
+xlabel ('Time (s)'), ylabel('Voltage');
+axis([0 tmax+1 -0.5 3.3]);
+threshold = 2.4;
+duringBeat = 0;
+counter = 0;
+pulse_rate = [];
+ 
+k = 0;
+v = 0;
+t = 0;
+ 
+tic 
+ 
+while toc<= tmax
+    k = k + 1;
+    v(k) = readVoltage(a,'A0');
+    t(k) = toc;
+    
+    if (v(k) >= threshold)
+           if(duringBeat == 0)
+                counter = counter +1;
+               %beatIndex = [beatIndex,i];
+                duringBeat = 1;
+           end
+    else
+       if (duringBeat == 1)
+           %beatIndex = [beatIndex,i];
+           duringBeat = 0;
+       end
+    end
+    
+    if k > 1
+        line([t(k-1) t(k)],[v(k-1) v(k)]);
+        drawnow;
+    end
+end
+
+save('HR.txt','counter','-ASCII','-append');
