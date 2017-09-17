@@ -1,0 +1,8 @@
+{
+    "org": "wt1fwf",
+    "domain": "internetofthings.ibmcloud.com",
+    "type": "sensor",
+    "id": "sensortest1",
+    "auth-method": "token",
+    "auth-token": "123"
+}
